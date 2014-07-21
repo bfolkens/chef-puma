@@ -1,13 +1,13 @@
 check process <%= @name %>.puma with pidfile <%= @pidfile %>
   start program = "<%= "#{@puma_directory}/puma_start.sh" %>"
-	  as uid "<%= @owner %>"
+	  as uid <%= @owner %> gid <%= @group %>
     with timeout <%= @monit_timeout.to_i %> seconds
   <% if @workers != 0 %>
   stop program = "<%= "#{@puma_directory}/puma_kill.sh" %>"
-	  as uid "<%= @owner %>"
+	  as uid <%= @owner %> gid <%= @group %>
     with timeout 5 seconds
   <% else %>
   stop program = "cd <%= @working_dir %> && <%= @exec_prefix %> pumactl -S <%= @state_path %> stop"
-	  as uid "<%= @owner %>"
+	  as uid <%= @owner %> gid <%= @group %>
     with timeout 20 seconds
   <% end %>
