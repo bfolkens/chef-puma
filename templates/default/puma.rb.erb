@@ -129,4 +129,13 @@ end
 # activate_control_app 'unix:///var/run/pumactl.sock', { no_token: true }
 <% if @activate_control_app %>
 activate_control_app "<%= @control_app_bind %>"
-<%- end %>
+<% end %>
+
+# This makes it so that the cluster master will detach itself from a Bundler
+# context on start. This allows the cluster workers to load your app and start
+# a brand new Bundler context within the worker only. This means your master
+# remains pristine and can live on between new releases of your code.
+<% if @prune_bundler %>
+prune_bundler
+<% end %>
+
